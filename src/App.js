@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 
@@ -9,18 +8,6 @@ function App() {
       
       <header className="App-header">
         <Game />
-           <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>     
       </header>      
       
     </div>
@@ -49,14 +36,14 @@ class Board extends React.Component {
 
   handleClick(i) {
     console.log('handleClick : ', i);
-    let square = this.state.squares;
-    if(square[i]) {
+    let squares = this.state.squares;
+    if(squares[i] || judgeWinner(squares)) {
       console.log('return case');
       return;
     }
-    square[i] = this.state.xIsNext ? 'X' : 'O';
+    squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
-      square : square,
+      squares : squares,
       xIsNext : !this.state.xIsNext,
     });
   }
@@ -66,7 +53,13 @@ class Board extends React.Component {
   }
 
   render() {
-    let status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+    let status;
+    let winner = judgeWinner(this.state.squares);
+    if(winner) {
+      status = 'Winner is : ' + winner;
+    } else {
+      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+    }
 
     return (
       <div>
@@ -105,6 +98,26 @@ class Game extends React.Component {
       </div>
     );
   }
+}
+
+function judgeWinner(squares) {
+  let lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ];
+  for(let i = 0; i < lines.length; i++) {
+    let [a, b, c] = lines[i];
+    if(squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
 }
 
 // ========================================
