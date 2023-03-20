@@ -49,6 +49,16 @@ class Board extends React.Component {
 
   handleClick(i) {
     console.log('handleClick : ', i);
+    let square = this.state.squares;
+    if(square[i]) {
+      console.log('return case');
+      return;
+    }
+    square[i] = this.state.xIsNext ? 'X' : 'O';
+    this.setState({
+      square : square,
+      xIsNext : !this.state.xIsNext,
+    });
   }
 
   renderSquare(i) {
