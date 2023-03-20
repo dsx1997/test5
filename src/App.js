@@ -27,26 +27,36 @@ function App() {
   );
 }
 
-class Square extends React.Component {
-  
-  render() {
+function Square(props) {
+
     return (
       
-      <button className="square" >
-        
+      <button className="square" onClick={props.funcProps1}>
+        {props.valProps1}
       </button>
     );
-  }
 }
 
 class Board extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      squares : Array(9).fill(null),
+      xIsNext : true,
+    };
+  }
+
+  handleClick(i) {
+    console.log('handleClick : ', i);
+  }
+
   renderSquare(i) {
-    return <Square />;
+    return <Square valProps1={this.state.squares[i]} funcProps1={() => this.handleClick(i)}/>;
   }
 
   render() {
-    const status = 'Next player: X';
+    let status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
 
     return (
       <div>
